@@ -52,7 +52,10 @@ public class UserService {
 
     public UserInfo findUserInfo(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        return new UserInfo(user);
+        Optional<User> byNickname = userRepository.findByNickname(user.getNickname());
+        User user1 = byNickname.get();
+        UserInfo build = UserInfo.builder().nickname(user1.getNickname()).email(user1.getEmail()).profileImage(user1.getProfileImage()).build();
+        return build;
     }
 
     @Transactional

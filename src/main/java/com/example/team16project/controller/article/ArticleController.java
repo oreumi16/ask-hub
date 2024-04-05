@@ -59,8 +59,6 @@ public class ArticleController {
         int startIdx = PaginationUtil.calculateStartIndex(page);
         int endIdx = PaginationUtil.calculateEndIndex(page, totalPages);
 
-
-
         model.addAttribute("articles", list);
         model.addAttribute("currentPage", page);
         model.addAttribute("startIdx", startIdx);

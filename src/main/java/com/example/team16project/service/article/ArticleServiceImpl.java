@@ -11,10 +11,17 @@ import com.example.team16project.repository.reply.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,15 +34,29 @@ public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
     private final ReplyRepository replyRepository;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Transactional(readOnly = true)
     @Override
     public ArticleDto getArticle(Long articleId) {
+
+//        User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        userDetails.getUserId()
+//        Set<String> members = redisTemplate.opsForSet().members(String.valueOf(articleId));
+
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 없습니다. id=" + articleId));
         List<Reply> replys = replyRepository.findByArticleArticleIdAndReplyReplyId(articleId, null);
-        return ArticleDto.toDto(article, replys);
+        ArticleDto dto = ArticleDto.toDto(article, replys);
+//        if (members != null) {
+//            dto.setLikeCount(dto.getLikeCount()+ members.size());
+//            if (members.contains()) {
+//                dto.setLikeClicked(true);
+//            }
+//        }
+        return dto;
     }
+
 
     @Transactional(readOnly = true)
     @Override

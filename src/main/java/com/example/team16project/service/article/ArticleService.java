@@ -7,6 +7,7 @@ import com.example.team16project.dto.article.request.ArticleWithIdForm;
 import com.example.team16project.dto.article.response.ArticleDto;
 import com.example.team16project.dto.article.request.ArticleForm;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface ArticleService {

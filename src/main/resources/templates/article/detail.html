@@ -21,7 +21,7 @@
         <div class="content-info">
             <img class="profileImage" th:src="'/images/'+${article.profileImage}" th:if="${article.profileImage != null}">
             <img class="profileImage" src="/images/user/default-profile.png" th:if="${article.profileImage == null}">
-            <p class="board-writer-name" th:value="${article.email}" th:text="${article.email}"></p>
+            <p class="board-writer-name" th:value="${article.nickname}" th:text="${article.nickname}"></p>
             <p class="content-createdAt" th:text="${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
             <p class="viewcount" th:text="'조회 ' + ${article.viewCount}"></p>
         </div>
@@ -30,8 +30,9 @@
         <h2 class="a11y">퀴즈 게시판 본문 내용</h2>
         <div class="content-detail" th:text="${article.contents}">
         </div>
-        <div class="like-thumb-container"><img class="like-thumb" src="/images/recommend/like-default.jpg" onclick="changeImageAndCount()"></div>
-        <div class="like-thumb-container-count">32</div>
+        <div class="like-thumb-container"><img class="like-thumb" th:if=${!article.likeClicked} src="/images/recommend/like-default.jpg" onclick="changeImageAndCount()"></div>
+        <div class="like-thumb-container"><img class="like-thumb" th:if=${article.likeClicked} src="/images/recommend/like-true.jpg" onclick="changeImageAndCount()"></div>
+        <div class="like-thumb-container-count" th:text="${article.likeCount}"></div>
     </section>
     <section class="comment-container">
         <div class="comment-header">
@@ -112,7 +113,6 @@
                             <div style="word-break:break-all" class="re-comment-contents" th:text="${rereply.comments}"
                                       onchange="reCommentEditWordCount(this)"
                                       oninput="reCommentEditWordCount(this)"></div>
-                            <div class="re-comment-text-edit-count hidden">0/1500</div>
                             <div class="re-comment-editor-bottom hidden">
                                 <button class="re-comment-submit-button" type="button"
                                         onclick="clickReCommentEditCompleteButton(this)">수정 완료

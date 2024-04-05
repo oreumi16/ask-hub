@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,5 +20,12 @@ public class UserInfo {
         this.nickname = user.getNickname();
         this.createdAt = user.getCreatedAt();
         this.profileImage = user.getProfileImage();
+    }
+
+    public UserInfo(String email, String nickname, String profileImage, LocalDateTime createdAt) {
+        this.email = email;
+        this.nickname = nickname;
+        this.profileImage = profileImage;
+        this.createdAt = createdAt;
     }
 }
